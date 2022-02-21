@@ -1,25 +1,26 @@
 import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react';
+import {TextField, Button, createTheme, ThemeProvider } from "@mui/material";
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
 function App() {
+  const [notificationText, setNotificationText] = useState("");
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <button onClick={displayNotification}></button>
-      </header>
-    </div>
+    <ThemeProvider theme={darkTheme}>
+      <div className="App">
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <TextField value={notificationText} onChange={(e) => setNotificationText(e.target.value)}></TextField>
+          <Button onClick={() =>displayNotification(notificationText)}>Enviar Notificacion</Button>
+        </header>
+      </div>
+    </ThemeProvider>
   );
 }
 let swRegistration = null;
@@ -32,7 +33,6 @@ if (navigator.serviceWorker) {
   }
   navigator.serviceWorker.register(swLocation).then(swReg => {
     console.log('Service Worker is registered', swReg);
-    // We are storing the service worker, globally
     swRegistration = swReg;
   })
   .catch(error => {
@@ -40,37 +40,27 @@ if (navigator.serviceWorker) {
   });
 }
 
-function displayNotification() {
-  //Ask user if we show notifications
+function displayNotification(notificationText) {
   if (window.Notification && Notification.permission === 'granted') {
-    notification();
-    // We will crete this function in a further step.
+    createNotification(notificationText);
+    return;
   }
-  // If the user hasn't told whether he wants to be notified or not
-  // Note: because of Chrome, we cannot be sure the permission property
-  // is set, therefore it's unsafe to check for the "default" value.
-  else if (window.Notification && Notification.permission !== 'denied') {
-    Notification.requestPermission(status => {
-      if (status === 'granted') {
-        notification();
-      } else {
-        alert('You denied or dismissed permissions to notifications.');
-      }
-    });
-  } else {
-    // If the user refuses to get notified
-    alert(
-      'You denied permissions to notifications. Please go to your browser or phone setting to allow notifications.'
-    );
+  
+  if (window.Notification && Notification.permission !== 'denied') {
+    Notification.requestPermission(status => status === 'granted' ? createNotification(notificationText) : alert('You denied or dismissed permissions to notifications.'));
+    return;
   }
+  alert(
+    'You denied permissions to notifications. Please go to your browser or phone setting to allow notifications.'
+  );
 }
 
-function notification() {
+function createNotification(text) {
   const options = {
-    body: 'Testing Our Notification',
+    body: text,
     icon: './logo192.png'
   };
-  swRegistration.showNotification('PWA Notification!', options);
+  swRegistration.showNotification("PWA NOTIFICATION!!!", options);
 }
 
 export default App;
