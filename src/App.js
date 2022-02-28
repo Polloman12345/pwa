@@ -1,7 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
 import { useState } from 'react';
-import {TextField, Button, createTheme, ThemeProvider } from "@mui/material";
+import {TextField, Button, createTheme, ThemeProvider, FormLabel } from "@mui/material";
+import useLocation from './hooks/useLocation';
 
 const darkTheme = createTheme({
   palette: {
@@ -11,6 +12,7 @@ const darkTheme = createTheme({
 
 function App() {
   const [notificationText, setNotificationText] = useState("");
+  const location = useLocation();
   return (
     <ThemeProvider theme={darkTheme}>
       <div className="App">
@@ -18,6 +20,8 @@ function App() {
           <img src={logo} className="App-logo" alt="logo" />
           <TextField value={notificationText} onChange={(e) => setNotificationText(e.target.value)}></TextField>
           <Button onClick={() =>displayNotification(notificationText)}>Enviar Notificacion</Button>
+
+          <FormLabel>Coords: {location?.longitude} {location?.latitude}</FormLabel>
         </header>
       </div>
     </ThemeProvider>
