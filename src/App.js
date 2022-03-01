@@ -26,7 +26,7 @@ function App(props) {
           <TextField value={notificationText} onChange={(e) => setNotificationText(e.target.value)}></TextField>
           <Button onClick={() =>displayNotification(notificationText)}>Enviar Notificacion</Button>
           <FormLabel>Coords: {location?.coords?.longitude} {location?.coords?.latitude}</FormLabel>
-          {enableSignalR && <SignalRNotifications text={notificationText}></SignalRNotifications> }
+          {enableSignalR && <SignalRNotifications text={notificationText} notifier={displayNotification}></SignalRNotifications> }
         </header>
       </div>
     </ThemeProvider>

@@ -1,12 +1,13 @@
 import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr"
 import { useEffect, useState } from "react";
-export const useNotifications = () => {
+export const useNotifications = (notifier) => {
     const [connection, setConnection] = useState(null);
 
     useEffect(() => {
       const connect = new HubConnectionBuilder()
-        .withUrl("https://pwaserverapi.azure-api.net/hubs/notifications")
-        // .withUrl("https://localhost:5001/hubs/notifications")
+        //.withUrl("https://pwaserverapi.azure-api.net/hubs/notifications")
+        .withUrl("https://localhost:5001/hubs/notifications")
+        //.withUrl("https://192.168.1.10:5001/hubs/notifications")
         .withAutomaticReconnect()
         .build();
   
@@ -18,8 +19,8 @@ export const useNotifications = () => {
         connection
           .start()
           .then(() => {
-            connection.on("ReceiveMessage", (message) => {
-                debugger;
+            connection.on("ReceiveMessage", (user, message) => {
+                notifier(message)
             //   notification.open({
             //     message: "New Notification",
             //     description: message,
