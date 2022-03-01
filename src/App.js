@@ -3,6 +3,7 @@ import './App.css';
 import { useState } from 'react';
 import {TextField, Button, createTheme, ThemeProvider, FormLabel } from "@mui/material";
 import useLocation from './hooks/useLocation';
+import {SignalRNotifications} from './SignalRNotifications';
 
 const darkTheme = createTheme({
   palette: {
@@ -10,9 +11,13 @@ const darkTheme = createTheme({
   },
 });
 
-function App() {
+function App(props) {
   const [notificationText, setNotificationText] = useState("");
   const location = useLocation();
+  
+  console.log(props)
+  const enableSignalR = new URLSearchParams(window.location.search).get("signal") != null
+  
   return (
     <ThemeProvider theme={darkTheme}>
       <div className="App">
@@ -20,8 +25,8 @@ function App() {
           <img src={logo} className="App-logo" alt="logo" />
           <TextField value={notificationText} onChange={(e) => setNotificationText(e.target.value)}></TextField>
           <Button onClick={() =>displayNotification(notificationText)}>Enviar Notificacion</Button>
-
-          <FormLabel>Coords: {location?.longitude} {location?.latitude}</FormLabel>
+          <FormLabel>Coords: {location?.coords?.longitude} {location?.coords?.latitude}</FormLabel>
+          {enableSignalR && <SignalRNotifications text={notificationText}></SignalRNotifications> }
         </header>
       </div>
     </ThemeProvider>
