@@ -19,6 +19,7 @@ self.addEventListener("activate", async (e) => {
     });
   });
 });
+
 self.addEventListener("fetch", function (event) {
   event.respondWith(
     caches.open(DYNAMIC_CACHE).then(function (cache) {
