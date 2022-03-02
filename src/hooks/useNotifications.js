@@ -5,9 +5,9 @@ export const useNotifications = (notifier) => {
 
     useEffect(() => {
       const connect = new HubConnectionBuilder()
-        .withUrl("http://192.168.1.10/PWAServer/hubs/notifications")
+        //.withUrl("https://192.168.1.10/PWAServer/hubs/notifications")
         //.withUrl("https://pwaserverapi.azure-api.net/hubs/notifications")
-        //.withUrl("https://localhost:5001/hubs/notifications")
+        .withUrl("https://localhost:5001/hubs/notifications")
         .withAutomaticReconnect()
         .build();
   

@@ -16,7 +16,7 @@ function App(props) {
   const location = useLocation();
   
   console.log(props)
-  const enableSignalR = new URLSearchParams(window.location.search).get("signal") == null
+  const enableSignalR = new URLSearchParams(window.location.search).get("signal") != null
   
   return (
     <ThemeProvider theme={darkTheme}>
