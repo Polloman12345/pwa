@@ -10,6 +10,7 @@ const APP_SHELL_INMUTABLE = [
 
 self.addEventListener("install", (e) => {});
 
+
 self.addEventListener("activate", async (e) => {
   const respuesta = caches.keys().then((keys) => {
     keys.forEach((key) => {
@@ -19,6 +20,7 @@ self.addEventListener("activate", async (e) => {
     });
   });
 });
+
 
 self.addEventListener("fetch", function (event) {
   event.respondWith(
